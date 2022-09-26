@@ -70,14 +70,18 @@ const Table = () => {
 
   const loadPolicies = useCallback(async () => {
     setIsLoading(true);
-    // TODO: Introduce error handling
-    const policies = await getPolicies();
-    setPolicies(
-      policies.filter(
-        (policy) => policy.status === "ACTIVE" || policy.status === "PENDING"
-      )
-    );
-    setIsLoading(false);
+    try {
+      const policies = await getPolicies();
+      setPolicies(
+        policies.filter(
+          (policy) => policy.status === "ACTIVE" || policy.status === "PENDING"
+        )
+      );
+    } catch {
+      alert("The policies request failed.");
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   // Loading the policies on startup
